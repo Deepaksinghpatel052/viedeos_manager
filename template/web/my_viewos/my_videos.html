@@ -1,0 +1,200 @@
+{% extends 'web/base_template.html' %}
+{% block content %}
+{% load static %}
+<div class="our-collection">
+<div class="container">
+    <div class="d-flex" style="
+    justify-content: space-between;
+">
+{% if user|user_type|lower == 'perfomer' %}
+<h1>MY VIDEOS</h1>
+{% else %}
+<h1>FAVOURITE VIDEOS</h1>
+{% endif %}
+<div class="short-list">
+Select Category  : <div class="select-custom">
+    <select name="orderby" id="search_by_category" class="form-control">
+                 
+                <option value="{% url 'my_videos:my_videos'%}" >All</option>
+                 {% if Category %}
+                 {% for item in Category %}
+                  {% if type == item.Slug %} 
+                        <option value="{% url 'my_videos:my_videos' item.Slug %}" selected="selected"   >{{item.Title}}</option>
+                  {% else %}      
+                   <option value="{% url 'my_videos:my_videos' item.Slug %}"  >{{item.Title}}</option>
+                   {% endif %}          
+
+                 {% endfor %}
+                 {% endif %} 
+                </select>
+                                    </div>
+        </div>
+</div>
+</div>
+
+</div>
+
+
+
+<section class="light-gray design-process-section" id="process-tab">
+<div class="container">
+
+{% if user|user_type|lower == 'perfomer' %}
+<div class="row">
+{% if object_list.filter %}
+{% for item in object_list.filter %}
+<div class="col-md-4">
+  <a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}"  target="_blank">
+<div class="product_box">
+<div class="cat_box">
+
+{% if item.Video_thumbnail %}
+<img src='{{item.Video_thumbnail.url}}' >
+{% else %}
+<img src='{% static "web/images/singer-2.png" %}' >
+{% endif %}
+</div>
+<div class="cat-text">
+<div class="singer_btn">
+<span>{{item.Categoryes.Title|slice:"0:8"}}</span>
+</div>
+<h4>{{item.Videos_Title|slice:"0:20"}} <br>From {{item.Country}}</h4>
+
+<p>{{item.Created_date}}</p>
+</div>
+
+
+</div>
+</a>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if user|user_type|lower == 'perfomer' %}
+{% if  count < system_upload_limit %}
+<div class="col-md-4">
+<div class="upload_imgbox">
+<div class="upbtn">
+<div class="plushb">
+<i class="fa fa-plus"></i>
+</div>
+
+<a href="{% url 'videos:add_videos' %}"><button><i class="fa fa-upload"></i> Upload Videos</button></a>
+
+
+
+<p>Video Size Max 100 MB.</p>
+
+</div>
+</div>
+</div>
+
+{% endif %}
+{% endif %}
+
+</div>
+{% else %}
+<!-- ======================================================================================== viter -->
+<div class="row">
+
+{% if object_list.filter %}
+{% for item in object_list.filter %}
+<div class="col-md-4">
+  <a href="{% url 'videos_detail:videos_detail' item.Video.Videos_id  item.Video.Videos_Slug %}" target="_blank">
+<div class="product_box">
+<div class="cat_box">
+
+{% if item.Video.Video_thumbnail %}
+<img src='{{item.Video.Video_thumbnail.url}}' >
+{% else %}
+<img src='{% static "web/images/singer-2.png" %}' >
+{% endif %}
+</div>
+<div class="cat-text">
+<div class="singer_btn">
+<span>{{item.Video.Categoryes.Title|slice:"0:8"}}</span>
+</div>
+<h4>{{item.Video.Videos_Title|slice:"0:20"}} <br>From {{item.Video.Country}}</h4>
+
+<p>{{item.Video.Created_date}}</p>
+</div>
+
+
+</div>
+</a>
+</div>
+{% endfor %}
+{% endif %}
+
+
+
+
+</div>
+
+{% endif %}
+<!-- ======================================================== -->
+    </div>
+
+
+</section>
+
+<!-- ======================================================================================== -->
+{% if user|user_type|lower == 'voter' %}
+{% if my_fave %}
+<div class="our-collection">
+<div class="container">
+    <div class="d-flex" style="
+    justify-content: space-between;
+">
+
+<h1>VOTED VIDEOS</h1>
+
+
+</div>
+</div>
+
+</div>
+
+
+<section class="light-gray design-process-section" id="process-tab">
+<div class="container">
+
+
+
+<div class="row">
+{% for item in my_fave %}
+
+{{item.Video|get_vote_video}}
+
+
+{% endfor %}
+
+
+
+
+
+</div>
+
+
+
+    </div>
+
+
+</section>
+
+{% endif %}
+{% endif %}
+<!-- ==================================================================== -->
+{% endblock %}
+
+
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function(){
+      $("#search_by_category").change(function(){
+        window.location.href = $(this).val();
+    });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% load static %}
+<div class="usercommentbox">
+
+
+<div class="header-voted bolder">
+<div class="usern">
+{% if get_vs_user_data.Image  %}
+<img class="detailing" src='{{get_vs_user_data.Image.url}}'>
+  {% else %}
+  {{"menu"|show_logo}}
+<!-- <img class="detailing" src='{% static "web/dummyUser.jpg" %}'> -->
+{% endif %}	
+
+<div class="macik"><h1>{{get_vs_user_data}} </h1>
+<!-- <p>From Poland</p> -->
+</div>
+</div>
+
+<div class="view_votes">
+<div class="text-center">
+	{% if get_reating %}
+	{% for items in get_reating %}
+    <div class="col-sm-2">
+        <div class="progressbar">
+            <div class="second circle" data-percent="{{items.Reating|get_value_in_ten_time}}"><canvas width="{{items.Reating|get_value_in_ten_time}}" height="{{items.Reating|get_value_in_ten_time}}"></canvas>
+              <strong>{{items.Reating|get_value_in_ten_time}}</strong>
+              <span>{{items.Reating_attrbute}}</span>
+            </div>
+            </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+ 
+
+  
+
+  
+
+  
+
+  
+
+    
+  </div>
+</div>
+
+</div>
+
+<div class="commentspace">
+<div class="showcomment">
+<div class="user_imgbox">
+{% if get_vs_user_data.Image  %}
+<img src='{{get_vs_user_data.Image.url}}'>
+  {% else %}
+  {{"menu"|show_logo}}
+{% endif %}	
+</div>
+<div class="comment_showtext">
+<p>{{get_coment.Comment}}</p>
+<!--<p><span class="reply_btn"><i class="fa fa-reply"></i> Reply</span></p>-->
+
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
