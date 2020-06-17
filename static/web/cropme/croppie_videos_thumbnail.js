@@ -19,7 +19,7 @@
 
       width:1000,
 
-      height:800
+      height:600
 
     }
 
@@ -56,7 +56,9 @@ var set_status = true;
           else
           {
             set_status = false;
-            alert("Please select image grater that 850*476px");
+            swal("Please select image grater that 850*476px", {
+            icon: "error",
+          });
           }
          }
 
@@ -93,9 +95,9 @@ $('.crop_image_edit').attr("disabled", true);
 $('.crop_image_edit').html('Image Upload');
 $('.crop_image_edit').attr("disabled", false);
          $("#set_videos_thumbnail").val(response);
-           // $("#imagePreview").css("background-image", "url(" + response + ")");
-        $("#uploadimageModal_edit #show_crop_image_dsp").html('<div class="product_box"><div class="cat_box"><span class="count_in btn" data-dismiss="modal" >OK</span><img src="'+response+'" style="height: 281px; width: 100%"></div></div>');
-          // $('#uploadimageModal_edit').modal('hide');
+           $("#set_crope_image_data").html('<img style="border: 2px solid; width:100%; height: 95px;"  src="'+response+'">');
+        // $("#uploadimageModal_edit #show_crop_image_dsp").html('<div class="product_box"><div class="cat_box"><span class="count_in btn" data-dismiss="modal" >OK</span><img src="'+response+'" style="height: 281px; width: 100%"></div></div>');
+          $('#uploadimageModal_edit').modal('hide');
 
     })
 

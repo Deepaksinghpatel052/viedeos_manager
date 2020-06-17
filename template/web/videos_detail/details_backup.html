@@ -214,13 +214,13 @@
 <div class="voterlist">
 <div class="header-voted">
 <div class="usern">
-<h4>Votes</h4> <h5>{{total_botes}} {% if total_botes < 1 %} User {% else %} Users {% endif %} </h5>
+<h4>Votes</h4> <h5>{{total_botes}} Users</h5>
 </div>
 
-<!-- {{total_rating}} -->
+
 <div class="view_votes">
-<span>{{total_botes}} Review</span>
-<a class="ava">Overall: {{object|get_average_of_reating|floatformat:2}}</a>
+<span>{{total_rating}} Review</span>
+<a class="ava">Overall: {{object|get_average_of_reating}}</a>
 </div>
 
 </div>
@@ -291,13 +291,13 @@
 <div class="range-slider">
 <span class="calone">1</span>
   <input type="hidden" name="range_name" value="{{item.id}}">
-  <input class="range-slider__range" name="range_{{item.id}}" type="range" value="0" min="0" max="{{item.Reating_Range}}">
+  <input class="range-slider__range" name="range_{{item.id}}" type="range" value="{% if user.username == '' %}0{% else %}{% get_rating user object item %}{% endif %}" min="0" max="{{item.Reating_Range}}">
   <span class="range-slider__value">0</span>
 </div>
 </div>
 <div class="text3">
 <div class="progressbar">
-            <div class="second circle" data-percent="0">
+            <div class="second circle" data-percent="{% if user.username == '' %}0{% else %}{% get_rating user object item '10' %}{% endif %}">
               <strong></strong>
              
             </div>
@@ -324,7 +324,7 @@
 
 <div class="commenttext">
 <div class="form-group">
-<textarea class="form-control" name="comments" ></textarea>
+<textarea class="form-control" name="comments" > {% if user.username == '' %} '' {% else %} {% get_comment user object %}  {% endif %}</textarea>
 </div>
 <div class="form-group btn_comment btn_box">
 

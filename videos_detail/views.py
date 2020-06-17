@@ -127,9 +127,6 @@ class VideosDetailView(generic.DetailView):
         get_review = VsRating.objects.values('User').filter(Video=get_data).filter(Status=True).annotate(total=Count('id'))
 
         # get_reating_no =  VsRating.objects.filter(Video=get_data).filter(Status=True).aggregate(Sum('Reating'))
-
-
-
         # ----------------------------------------------------------
         get_data  = get_data
         all_reating = []
@@ -169,8 +166,8 @@ class VideosDetailView(generic.DetailView):
             print(request.POST["range_"+item]) 
             get_rating_ins = get_object_or_404(VsReatingAttribute,id=item)
             if VsRating.objects.filter(Video=get_video_ins).filter(User=user_ins).filter(Reating_attrbute=get_rating_ins).exists():
-                VsRating.objects.filter(Video=get_video_ins).filter(User=user_ins).filter(Reating_attrbute=get_rating_ins).update(Reating=request.POST["range_"+item])
-                message = "Your rating is updated successfully. Thank You for your valuable rating"
+                # VsRating.objects.filter(Video=get_video_ins).filter(User=user_ins).filter(Reating_attrbute=get_rating_ins).update(Reating=request.POST["range_"+item])
+                message = "On this video you are already given rated"
 
             else:
                 add_rating  =  VsRating(Video=get_video_ins,User=user_ins,Reating_attrbute=get_rating_ins,Reating=request.POST["range_"+item]) 
@@ -180,7 +177,8 @@ class VideosDetailView(generic.DetailView):
         if request.POST["comments"] != "":
             message_2 = " & Comment"
             if VsComments.objects.filter(Video=get_video_ins).filter(User=user_ins).exists():
-                VsComments.objects.filter(Video=get_video_ins).filter(User=user_ins).update(Comment=request.POST["comments"])
+                terst = ""
+                # VsComments.objects.filter(Video=get_video_ins).filter(User=user_ins).update(Comment=request.POST["comments"])
             else:
                 add_comment = VsComments(Video=get_video_ins,User=user_ins,Comment=request.POST["comments"])
                 add_comment.save()

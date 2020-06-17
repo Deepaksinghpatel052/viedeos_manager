@@ -3,11 +3,11 @@
  <link href="https://vjs.zencdn.net/7.7.6/video-js.css" rel="stylesheet" />
  <style type="text/css">
       .modal-dialog-full-width {
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width:none !important;
+width: 70% !important;
+    height: 100% !important;
+    margin-left: 15% !important;
+    padding: 0 !important;
+    max-width: none !important;
 
     }
 
@@ -48,7 +48,7 @@ Select Category: <div class="select-custom">
 <div class="container">
 <!--   {{set_upload_status}}
   {{my_uploaded_videos}} -->
-{% if user|user_type|lower == 'perfomer' %}
+{% if user|user_type|lower == 'performer' %}
 
   {% if set_upload_status  %}
   <h1>Your upload limit is end. You can upload only '{{upload_limit}}' from one acount.</h1>
@@ -83,10 +83,10 @@ Select Category: <div class="select-custom">
             <div class="preview-zone hidden">
               <div class="box box-solid">
                 <div class="box-header with-border">
-                  <div><b>Preview</b></div>
+                  <div class="btn btn-xs" style="background-color: #48c5b5;color: #fff;"><b>Video Attached Successfully</b></div>
                   <div class="box-tools pull-right">
                     <button type="button" class="btn btn-danger btn-xs remove-preview">
-                      <i class="fa fa-times"></i> Reset This Form
+                      <i class="fa fa-times"></i> Remove Attachment.
                     </button>
                   </div>
                 </div>
@@ -105,8 +105,8 @@ Select Category: <div class="select-custom">
       
 
      
-        <div class="col-md-12 text-center">
-          <button type="submit" class="btn_upload  set_status_for_submit_btn">Upload Videos</button>
+        <div class="col-md-12 text-center video_submit_button_dsp hidden">
+          <button type="submit" class="btn_upload  set_status_for_submit_btn">UPLOAD VIDEO</button>
        
       </div>
   
@@ -141,75 +141,80 @@ Select Category: <div class="select-custom">
           <input type="hidden" name="" id="video_info_submit_update_form_url" value="{% url 'videos:add_video_info' %}">
 			  <div class="row givevideo">
 			  
-			  <div class="col-md-6">
-			  <div class="form-group">
-			  <div class="col-md-12">
+        <div class="col-md-9">
+          <div class="col-md-6">
+        <div class="form-group">
         <label>Give Your Video a Category</label>
-        </div>
-			 <select class="form-control" id="select_category" data-url="{% url 'videos:get_sub_category' %}" required="" name="categorys">
-			 <option>Select Category</option>
+       <select class="form-control" id="select_category" data-url="{% url 'videos:get_sub_category' %}" required="" name="categorys">
+       <option>Select Category</option>
        {% if category %}
        {% for items in category %}
        <option value="{{items.id}}">{{items}}</option>
        {% endfor %}
        {% endif %}
-			 </select>
-			  </div>
-			  </div>
-			  
-			  <div class="col-md-6">
-			  <div class="form-group">
-			  <div class="col-md-12">
-        <label>Give Your Video a Sub Category</label>
+       </select>
         </div>
-			 <select class="form-control" id="select_sub_category"  name="sub_categorys">
-			
-			 </select>
-			  </div>
-			  </div>
-	
-      <!--     <div class="col-md-6">
+        </div>
+
+        <div class="col-md-6">
+
+        <div class="form-group">
+        <label>Give Your Video a Sub Category</label>
+       <select class="form-control" id="select_sub_category"  name="sub_categorys">
+        <option value="">Select sub category</option>
+       </select>
+        </div>
+        </div>
+ <div class="col-md-12">
+        <div class="form-group">
+        <label>Give Your Video A Title</label>
+       <input type="text" class="form-control" required="" placeholder="Vdeo Title" name="video_name" />
+        </div>
+        </div>
+        </div>
+        <div class="col-md-3">
+          <label>Video Thumbnail</label>
+          <div id="set_crope_image_data">
+          <img style="border: 2px solid; width:100%; height: 95px;"  src='{% static "web/images/video_thuim.png" %}'>  
+          </div>
+          
             <div class="form-group">
-              <label>Country</label>
-             <input type="text" placeholder="Country" required="" class="form-control" name="country" />
-              </div>
-          </div> -->
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Video Thumbnail  <span style="color:red;" id="show_error_message"></span></label>
               <input type="hidden" name="thumbnail"  id="set_videos_thumbnail">
              <input type="file"  accept=".png, .jpg, .jpeg"  required="" class="form-control" id="get_videos_thumbnail" />
-              </div>
+             <span style="color:red; font-size: 19px;" id="show_error_message"></span>
           </div>
+        </div>
+
+			  
+			  
+			  
+	
+      
+          
     
-			  <div class="col-md-12">
-			  <div class="form-group">
-			  <label>Give Your Video A Title</label>
-			 <input type="text" class="form-control" required="" placeholder="Vdeo Title" name="video_name" />
-			  </div>
-			  </div>
+			 
 			   <div class="col-md-12">
 			  <div class="form-group">
 			  <label>Discribe your Video</label>
 			 <textarea class="form-control" required="" id="summernote" name="description"></textarea>
 			  </div>
 			  </div>
-        <div class="col-md-6">
+        <div class="col-md-6 hidden">
             <div class="form-group">
               <label>Meta Title</label>
-             <input type="text" placeholder="Meta Title" required=""  class="form-control" name="meta_title" />
+             <input type="text" placeholder="Meta Title"   class="form-control" name="meta_title" />
               </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 hidden">
             <div class="form-group">
               <label>Meta Kayword</label>
-             <input type="text" placeholder="Meta keyword" required="" class="form-control" name="meta_keyword" />
+             <input type="text" placeholder="Meta keyword" class="form-control" name="meta_keyword" />
               </div>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12 hidden">
         <div class="form-group">
         <label>Meta Description</label>
-       <textarea class="form-control" required="" placeholder="Meta Description" name="meta_description"></textarea>
+       <textarea class="form-control" placeholder="Meta Description" name="meta_description"></textarea>
         </div>
         </div>
 			  <div class="col-md-12 text-right">
@@ -282,31 +287,22 @@ Select Category: <div class="select-custom">
 
 
 
+<!--  -->
 
-
-<div id="uploadimageModal_edit" class="modal" role="dialog">
+<div id="uploadimageModal_edit" class="modal" role="dialog" style="margin-top:-3%; ">
    <div class="modal-dialog-full-width modal-dialog modal-lg">
       <div class="modal-content">
          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Upload & Crop Image</h4>
             <button class="btn btn-success crop_image_edit">Save Image</button>
          </div>
          <div class="modal-body">
             <div class="row">
                <div class="col-md-8 text-center">
-                  <div id="image_demo_edit" style="width:350px; margin-top:30px"></div>
+                  <div id="image_demo_edit" style="width:350px;"></div>
                </div>
-               <div class="col-md-4" style="padding-top:30px;" id="show_crop_image_dsp">
-                
-                  
-                  <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
-               </div>
+              
+
             </div>
-         </div>
-         <div class="modal-footer">
-             
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
          </div>
       </div>
    </div>

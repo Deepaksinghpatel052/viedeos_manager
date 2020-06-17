@@ -44,6 +44,8 @@ function readFile(input) {
       var wrapperZone = $(input).parent();
       var previewZone = $(input).parent().parent().find('.preview-zone');
       var boxZone = $(input).parent().parent().find('.preview-zone').find('.box').find('.box-body');
+      
+      $(".video_submit_button_dsp").removeClass('hidden');
 
       wrapperZone.removeClass('dragover');
       previewZone.removeClass('hidden');
@@ -83,5 +85,6 @@ $('.remove-preview').on('click', function() {
   var dropzone = $(this).parents('.form-group').find('.dropzone');
   boxZone.empty();
   previewZone.addClass('hidden');
+  $(".video_submit_button_dsp").addClass('hidden');
   reset(dropzone);
 });

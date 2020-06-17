@@ -20,7 +20,7 @@ class VsUsers(models.Model):
     Image  = models.FileField(upload_to=user_directory_path_favicon,null=True,blank=True)
     DOJ  = models.DateField(default=django.utils.timezone.now)
     status = models.BooleanField(default=True)
-    Contact_no = models.IntegerField()
+    Contact_no = models.IntegerField(default=0,null=True,blank=True)
     Zip_Code = models.IntegerField(null=True,blank=True)
     otp = models.CharField(null=True,blank=True,max_length=5)
     def __str__(self):

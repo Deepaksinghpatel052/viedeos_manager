@@ -47,14 +47,12 @@
       
     {% endfor %}
 
-{% else %}
+    {% endif %}
+
 <span>
 
 {{"menu"|show_logo}}
 </span>
-    {% endif %}
-
-
 <div class="login-logo">
 <h1><a href="{% url 'home:home' %}">{{"menu"|show_project_title}}</span></a></h1>
 </div>

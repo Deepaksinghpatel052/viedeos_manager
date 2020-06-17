@@ -55,6 +55,8 @@ class VarificationView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         user_code = self.kwargs.get("user_code")
         get_data  = None
+        if self.request.user.username:
+            return redirect(settings.BASE_URL)
         if VsUsers.objects.filter(user_code=user_code).exists():
             get_data = get_object_or_404(VsUsers , user_code=user_code)
         context["user_info"] = get_data
@@ -72,11 +74,13 @@ class VarificationView(generic.TemplateView):
             get_varify_status = get_object_or_404(User,id=get_data.user.id)
             if get_varify_status.is_active:
                 messages.info(request, 'Account Already Varify Successfully.')
+                return redirect(settings.BASE_URL + "account/")
             else:
                 if get_data.otp == otp_code:
                     User.objects.filter(id=get_data.user.id).update(is_active=True)
                     VsUsers.objects.filter(id=user_id).update(otp=otp)
                     messages.info(request, 'Account Verify Successfully.')
+                    return redirect(settings.BASE_URL+"account/")
                 else:
                     messages.error(request, 'Your varification code is incorrect.')
         else:
@@ -90,9 +94,13 @@ class RegistrationView(generic.View):
     vs_user_form = VsUsersForm
 
     def get(self,request):
+        if request.user.username:
+            return redirect(settings.BASE_URL)
         return render(request,"web/account/registration.html",{"d_user_form":self.d_user_form,"vs_user_form":self.vs_user_form})
 
     def post(self, request):
+        if request.user.username:
+            return redirect(settings.BASE_URL)
         post_data = request.POST or None
         d_user_form = self.d_user_form(post_data)
         vs_user_form = self.vs_user_form(post_data)
@@ -109,7 +117,7 @@ class RegistrationView(generic.View):
 
             ################################################ EMAL SEND CODE START ##############
             get_system_info = VsSystemSettings.objects.all().first()
-            data_content = { "yourname": vs_usr.name, "user_email": new_user.email,"otp": otp,"get_system_info":get_system_info}
+            data_content = { "yourname": vs_usr.name, "user_email": new_user.email,"otp": otp,"get_system_info":get_system_info,'user_code':vs_usr.user_code,"BASE_URL":settings.BASE_URL}
             email_content = render_to_string('email_template/email_send_for_create_new_account.html', data_content)
             msg = email.message.Message()
             msg['Subject'] = 'Account Created Successfully'
@@ -134,15 +142,19 @@ class RegistrationView(generic.View):
 class LoginView(generic.TemplateView):
     template_name = "web/account/login.html"
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.username:
+            return redirect(settings.BASE_URL)
+        return context
 
 def DashBoardView(request):
     get_data = None
     if VsUsers.objects.filter(user=request.user).exists():
         get_data = get_object_or_404(VsUsers , user=request.user)
     if get_data.Type.lower()=="perfomer":
-        return  redirect(settings.BASE_URL+'dashboard/')
+        return  redirect(settings.BASE_URL+"search/")
     else:
-        return  redirect(settings.BASE_URL+'dashboard/')
+        return  redirect(settings.BASE_URL+"search/")
     return HttpResponse(get_data)
 

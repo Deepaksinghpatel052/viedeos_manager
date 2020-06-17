@@ -24,6 +24,12 @@
   <link rel="stylesheet" href='{% static "web/cropme/croppie.css" %}'  type="text/css">
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
   <style type="text/css">
+  .ty-search-controll {
+    z-index: 100;
+    position: relative;
+	}
+  
+  
     .se-pre-con {
    display: none;
   position: fixed;
@@ -37,12 +43,57 @@
 
 
 
-ol.mp_list { z-index:111; margin-top:45px !important; /*margin-top:40px !important;*/ background-color: #FFFFFF; color:#000000 !important; border-left: 1px solid #C0C0C0; border-right: 1px solid #C0C0C0; overflow: hidden; position: absolute; width: 100%; height:auto; overflow:-y; z-index: 111 !important; padding-left:0px; text-align: left; top:-10px;}
-  ol.mp_list1 { z-index:111;  margin-top:50px !important; background-color: #FFFFFF; color:#000000 !important; border-left: 1px solid #C0C0C0; border-right: 1px solid #C0C0C0; overflow: hidden; position: absolute; width: 100%; height:auto; overflow:-y; z-index: 111 !important; padding-left:0px; text-align: left; }
-   /* Each list item, regardless of success, error, etc. */ 
-   ol.mp_list li { border-bottom: 1px solid #C0C0C0; padding: 0px 0; list-style-type: none;}
-    /* Each list item from a successful request. */ 
-    ol.mp_list li.mp_item {  width: 100%; font: 16px'Oswald', sans-serif; text-indent: 12px; } /* Each list item that's selectable. */ ol.mp_list li.mp_selectable { cursor: pointer; } /* Currently highlighted list item. */ ol.mp_list li.mp_highlighted { background-color: #48c5b5; width: 100%; } /* When a request is made that returns zero results. */ ol.mp_list li.mp_no_results { } /* When a request is made that doesn't meet the 'minChars' length option. */ ol.mp_list li.mp_min_chars { } /* When a request is made that fails during the ajax request. */ ol.mp_list li.mp_error { }
+ol.mp_list {
+    margin-top: 45px !important;
+    background-color: #FFFFFF;
+    color: #000000 !important;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    overflow-y: hidden;
+    z-index: 1;
+    padding-left: 0px;
+    text-align: left;
+    top: -25px;
+    text-transform: capitalize;
+    border-radius: 0;
+    padding-top: 15px;
+}
+
+  ol.mp_list {
+    margin-top: 45px !important;
+    background-color: #FFFFFF;
+    color: #000000 !important;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    overflow-y: hidden;
+    z-index: 1 !important;
+    padding-left: 0px;
+    text-align: left;
+    top: -25px;
+    text-transform: capitalize;
+    border-radius: 0;
+    padding-top: 15px;
+}
+  
+   ol.mp_list li {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 5px 5px 30px;
+    list-style-type: none; font-style:normal;}
+	
+    ol.mp_list li.mp_item {
+    width: 100%;
+}
+
+
+ ol.mp_list li.mp_selectable { cursor: pointer; } /* Currently highlighted list item. */ ol.mp_list li.mp_highlighted { background-color: #f7f7f7; width: 100%; } /* When a request is made that returns zero results. */ ol.mp_list li.mp_no_results { } /* When a request is made that doesn't meet the 'minChars' length option. */ ol.mp_list li.mp_min_chars { } /* When a request is made that fails during the ajax request. */ ol.mp_list li.mp_error { }
     .dsp_set_height{
 height: 269px;    
 }
@@ -57,6 +108,9 @@ height: 269px;
   
     height: 477px !important;
 }
+.se-pre-con {
+
+    background-size: 30px;
 }
   </style>
    {% block cssstyle %}
@@ -99,7 +153,7 @@ height: 269px;
             <li class="directory"><a href="{% url 'videos:add_videos' %}" class="item"><i class="fa fa-video-camera"></i> Submit Your Video</a></li>
             {% else %}
             
-            {% if user|user_type|lower == 'perfomer' %}
+            {% if user|user_type|lower == 'performer' %}
             <li class="directory"><a href="{% url 'videos:add_videos' %}" class="item"><i class="fa fa-video-camera"></i> Submit Your Video</a></li>
             {% else %}
 
@@ -161,7 +215,7 @@ height: 269px;
 {% if user.username == '' %}
            <li><a href="{% url 'videos:add_videos' %}" class="active">Submit Your Video</a></li>
             {% else %}
-{% if user|user_type|lower == 'perfomer' %}
+{% if user|user_type|lower == 'performer' %}
 <li><a href="{% url 'videos:add_videos' %}" class="active">Submit Your Video</a></li>
 {% else %}
 
@@ -201,7 +255,7 @@ height: 269px;
 {% if user.username == '' %}
            <a href="{% url 'videos:add_videos' %}" class="submit_btn">Submit Your Video</a>
             {% else %}
-{% if user|user_type|lower == 'perfomer' %}
+{% if user|user_type|lower == 'performer' %}
 <a href="{% url 'videos:add_videos' %}" class="submit_btn">Submit Your Video</a>
 {% else %}
 

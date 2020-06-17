@@ -23,15 +23,34 @@
     {% endfor %}
 {% else %}
 
-<span>
+
+	  {% if messages %}
+    {% for message in messages %}
+        
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong> 
+                    </div>
+                   {% else %}
+                    <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong> 
+                    </div>
+                     {% endif %}
+      
+    {% endfor %}
+
+    {% endif %}
+
+{% endif %}
+
+	<span>
 	{{"menu"|show_logo}}
 	</span>
 	<div class="login-logo">
 	<h1><a href="{% url 'home:home' %}">{{"menu"|show_project_title}}</span></a></h1>
 	</div>
-{% endif %}
-
-	
 
 	
 	</div>

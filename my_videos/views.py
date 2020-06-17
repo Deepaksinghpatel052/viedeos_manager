@@ -12,10 +12,12 @@ from videos.models import VsVideos,VsComments,VsRating
 from django.db.models import Count
 from django.template.defaulttags import register
 from django.template.loader import render_to_string
+from django.http import HttpResponse, JsonResponse
 # Create your views here.
 
 @register.filter(name='get_vote_video')
 def get_vote_video(video_id):
+    status = "Video removed successfully."
     video = None
     if VsVideos.objects.filter(id=video_id).filter(Publich_Status=True).exists():
         video = get_object_or_404(VsVideos,id=video_id,Publich_Status=True)
@@ -23,13 +25,20 @@ def get_vote_video(video_id):
     return render_to_string("web/my_viewos/voted_videos.html",user_data)
 
 
+def RemoveVIdeo(request,video_id):
+    status = "Video Removed Successfully."
+    if video_id:
+        if VsVideos.objects.filter(Videos_id=video_id).exists():
+            VsVideos.objects.filter(Videos_id=video_id).delete()
+    return JsonResponse({"status":status})
+
 @method_decorator(login_required , name="dispatch")
 class MyVideosView(generic.ListView):
     template_name = "web/my_viewos/my_videos.html"
 
     def get_queryset(self):
         Created_By = get_object_or_404(VsUsers, user=self.request.user)
-        if Created_By.Type.lower()=="perfomer":
+        if Created_By.Type.lower()=="performer":
             get_cate_ins = None
             if "types" in self.kwargs:
                 if VsCategory.objects.filter(Slug=self.kwargs["types"]).exists():

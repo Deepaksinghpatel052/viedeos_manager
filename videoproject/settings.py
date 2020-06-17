@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'favourite_videos',
     'search',
     'manage_cms_page',
+    'django_countries',
 ]
 
 MIDDLEWARE = [
@@ -116,6 +117,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTHENTICATION_BACKENDS = ('videoproject.backends.CaseInsensitiveModelBackend', )
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -189,8 +192,8 @@ BASE_URL = "http://3.22.99.131/"
 
 
 LOGIN_URL = BASE_URL+'account'
-LOGIN_REDIRECT_URL = BASE_URL+"dashboard/"
-LOGOUT_REDIRECT_URL = BASE_URL
+LOGIN_REDIRECT_URL = BASE_URL+'search/'
+LOGOUT_REDIRECT_URL = BASE_URL+'search/'
 
 
 

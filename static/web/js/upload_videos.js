@@ -34,7 +34,7 @@ $("#submit_video_ditales").on("submit",function(event){
   {
     $(".se-pre-con").css("display","none");
     document.getElementById("get_videos_thumbnail").value = null;
-    $("#show_error_message").text("crope image is not seleted.");
+    $("#show_error_message").text("crop image is not selected.");
   }
  
  

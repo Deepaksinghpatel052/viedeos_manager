@@ -65,11 +65,11 @@ def add_video_info(request):
         video_name = request.POST['video_name']
         description = request.POST['description']
 
-        meta_title = ""
+        meta_title = request.POST['video_name']
         if "meta_title" in request.POST:
             meta_title = request.POST['meta_title']
 
-        meta_keyword = ""
+        meta_keyword = request.POST['meta_title']
         if "meta_keyword" in request.POST:
             meta_keyword = request.POST['meta_keyword']
         meta_description = ""
