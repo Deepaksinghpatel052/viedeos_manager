@@ -1,0 +1,25 @@
+{% load static %}
+<div class="col-md-4">
+  <a href="{% url 'videos_detail:videos_detail' video.Videos_id  video.Videos_Slug %}">
+<div class="product_box">
+<div class="cat_box">
+
+{% if video.Video_thumbnail %}
+<img src='{{video.Video_thumbnail.url}}' >
+{% else %}
+<img src='{% static "web/images/singer-2.png" %}' >
+{% endif %}
+</div>
+<div class="cat-text">
+<div class="singer_btn">
+<span>{{video.Categoryes}}</span>
+</div>
+<h4>{{video.Videos_Title|slice:"0:20"}} <br>From {{video.Country}}</h4>
+
+<p>{{video.Created_date}}</p>
+</div>
+
+
+</div>
+</a>
+</div>
