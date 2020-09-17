@@ -9,7 +9,9 @@
   {{"menu"|show_logo}}
 <!-- <img class="detailing" src='{% static "web/dummyUser.jpg" %}'> -->
 {% endif %}	
-<div class="macik"><h1>{{get_vs_user_data}} </h1>
+
+<div class="macik"><h1>{{get_vs_user_data}}<sup style="
+    color: red;"><a href="{{get_vs_user_data.Site_Link}}" target="_blank">({{get_vs_user_data.Other_Type}})</a></sup></h1>
 <p>{{get_reating.0.Created_date}}</p>
 <p class="gettext">{{get_coment.Comment}}</p>
 </div>
@@ -33,7 +35,7 @@
         <div class="progressbar">
             <div class="second circle" data-percent="{% get_one_user_overview get_vs_user_data get_reating.0.Video %}"><canvas class="ca" width="{% get_one_user_overview get_vs_user_data get_reating.0.Video %}" height="{% get_one_user_overview get_vs_user_data get_reating.0.Video %}"></canvas>
               <strong>{% get_one_user_overview get_vs_user_data get_reating.0.Video %}</strong>
-              <span>overall</span>
+              <span><b>Overall</b></span>
             </div>
             </div>
     </div>    

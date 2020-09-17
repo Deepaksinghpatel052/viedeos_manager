@@ -153,18 +153,15 @@ height: 269px;
             <li class="directory"><a href="{% url 'videos:add_videos' %}" class="item"><i class="fa fa-video-camera"></i> Submit Your Video</a></li>
             {% else %}
             
-            {% if user|user_type|lower == 'performer' %}
-            <li class="directory"><a href="{% url 'videos:add_videos' %}" class="item"><i class="fa fa-video-camera"></i> Submit Your Video</a></li>
-            {% else %}
+             <li class="directory"><a href="{% url 'videos:add_videos' %}" class="item"><i class="fa fa-video-camera"></i> Submit Your Video</a></li>
 
-            <li><a href="{% url 'search:search' %}" class="active"><i class="fa fa-thumbs-o-up"></i> Rate Now</a></li>
-            {% endif %}
             {% endif %}
             <!-- <li class="jobs"><a href="{% url 'my_videos:my_videos' %}" class="item"><i class="fa fa-user"></i> Our Collection</a></li> -->
-            
+            <li class="directory"><a href="{% url 'subscription:subscription' %}" class="item"><i class="fa fa-youtube-play" aria-hidden="true"></i>Subscription</a></li>
+
              {{"dummt_data"|get_page_link_sidebar}}
    
-
+    
 			
             {% if user.username != ""  %}
             <li><a href="{% url 'account:logout' %}" class="item"><i class="fa fa-power-off"></i>Logout</a></li>
@@ -198,7 +195,11 @@ height: 269px;
 <div class="logo-center">
 <h1><a href="{% url 'home:home' %}">{{"menu"|show_logo}}  </a></h1>
 </div>
-<div class="searchiconb"><span><a href="#"><i class="fa fa-search"></i></a></span></div>
+<div class="searchiconb"><span>
+ {% if user.username %}
+  <a href="{% url 'my_videos:my_videos' %}" class="item">{{user.username}}</a>
+ {% endif %}
+</span></div>
 <div class="rightsidebox">
 <ul>
 
@@ -214,7 +215,8 @@ height: 269px;
 
 
 {% endif %}
-{% if user.username == '' %}
+<li><a href="{% url 'videos:add_videos' %}" class="active">Submit Your Video</a></li>
+<!-- {% if user.username == '' %}
            <li><a href="{% url 'videos:add_videos' %}" class="active">Submit Your Video</a></li>
             {% else %}
 {% if user|user_type|lower == 'performer' %}
@@ -223,7 +225,7 @@ height: 269px;
 
 <li><a href="{% url 'search:search' %}" class="active">Rate Now</a></li>
 {% endif %}
-{% endif %}
+{% endif %} -->
 </ul>
 </div>
 
@@ -244,7 +246,7 @@ height: 269px;
 
 
 {{"dummt_data"|get_page_link}}
-<!-- <li><a href="{% url 'my_videos:my_videos' %}">Our Collection</a></li> -->
+<li><a href="{% url 'subscription:subscription' %}">Subscription</a></li>
 </ul>
 <div class="follows">Follow Us On
 {{"dummt_data"|get_social_link}}
@@ -253,7 +255,9 @@ height: 269px;
 
 <div class="col-md-6 text-right">
 <p>New Videos updated by <strong style="color:#50c5b6;">{{"test"|get_last_uploaded_vido_by}}</strong> On <strong>{{"test"|get_last_uploaded_vido_on}}</strong> </p>
-{% if user.username == '' %}
+
+<a href="{% url 'videos:add_videos' %}"><button type="button" class="btn_upload" style="width: 229px;">Submit Your Video</button></a>
+<!-- {% if user.username == '' %}
            <a href="{% url 'videos:add_videos' %}" class="submit_btn">Submit Your Video</a>
             {% else %}
 {% if user|user_type|lower == 'performer' %}
@@ -262,7 +266,7 @@ height: 269px;
 
 <a href="{% url 'search:search' %}" ><button type="button">Rate Now</button></a>
 {% endif %}
-{% endif %}
+{% endif %} -->
 
 </div>
 
@@ -310,7 +314,7 @@ formatItem: function(data,$item){
   var get_text = data.Videos_Title;
   if(data.Videos_Title.length>20)
   {
-     get_text = data.Videos_Title.substring(1, 20)+"...";
+     get_text = data.Videos_Title.substring(0, 20)+"...";
   }
 return get_text;
 

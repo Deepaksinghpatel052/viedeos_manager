@@ -12,8 +12,12 @@ from django.template.loader import render_to_string
 from imratedme import settings
 import smtplib
 from .models import VsUsers
+from datetime import datetime
+from datetime import date
 from django.urls import reverse_lazy
-from system_setting.models import VsSystemSettings
+from project_control.models import VsSystemSettings
+from subscription.models import VsUserSubscriptionPayment,VsSubscription
+from django import forms
 # Create your views here.
 
 def test_mail(request):
@@ -21,7 +25,7 @@ def test_mail(request):
     msg = email.message.Message()
     msg['Subject'] = 'XXXX is your OTP to verify and complete registration with iamRatedme.com'
     msg['From'] = settings.EMAIL_HOST_USER
-    msg['To'] = 'deepaksinghpatel052@gmail.com'
+    msg['To'] = 'applicationsupport@imratedme.com'
     password = settings.EMAIL_HOST_PASSWORD
     msg.add_header('Content-Type', 'text/html')
     msg.set_payload(email_content)
@@ -97,7 +101,7 @@ class VarificationView(generic.TemplateView):
                     else:
                         if user.is_active:
                             login(request, user)
-                            return redirect(settings.BASE_URL + "search/")
+                            return redirect(settings.BASE_URL + "account/dashboard")
                         else:
                             messages.error(request, "Inactive user.")
                 return redirect(settings.BASE_URL + "account/")
@@ -116,7 +120,7 @@ class VarificationView(generic.TemplateView):
                         else:
                             if user.is_active:
                                 login(request, user)
-                                return redirect(settings.BASE_URL + "search/")
+                                return redirect(settings.BASE_URL + "account/dashboard")
                             else:
                                 messages.error(request, "Inactive user.")
                     return redirect(settings.BASE_URL+"account/")
@@ -190,11 +194,24 @@ class LoginView(generic.TemplateView):
 
 def DashBoardView(request):
     get_data = None
-    if VsUsers.objects.filter(user=request.user).exists():
-        get_data = get_object_or_404(VsUsers , user=request.user)
-    if get_data.Type.lower()=="performer":
-        return  redirect(settings.BASE_URL+"dashboard/")
+    if request.user.is_superuser:
+        return redirect(settings.BASE_URL + "admin")
     else:
-        return  redirect(settings.BASE_URL+"search/")
-    return HttpResponse("test")
+        if VsUsers.objects.filter(user=request.user).exists():
+            get_data = get_object_or_404(VsUsers , user=request.user)
+            if VsUserSubscriptionPayment.objects.filter(User=get_data).filter(Active_status=True).exists():
+                get_package_data = get_object_or_404(VsUserSubscriptionPayment, User=get_data, Active_status=True)
+                if get_package_data:
+                    if get_package_data.Expayer_date.date() >= datetime.today().date():
+                        # return HttpResponse("test uhsdjbcdsahc dahc adshcb ds  sdc d")
+                        return redirect(settings.BASE_URL + "dashboard/")
+                    else:
+                        # return HttpResponse("test uhsdjbcdsahc dahc adshcb ds  sdc d dfss")
+                        return redirect(settings.BASE_URL + "subscription/")
+                else:
+                    # return HttpResponse("test uhsdjbcdsahc dahc adshcb ds  sdc d sdcdsc")
+                    return redirect(settings.BASE_URL + "subscription/")
+            else:
+                return redirect(settings.BASE_URL + "subscription/")
+    return redirect(settings.BASE_URL)
 

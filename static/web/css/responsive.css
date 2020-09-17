@@ -1,5 +1,15 @@
 
+@media (min-width: 992px){
+.product_box {
+
+    /*height: 278px;*/
+}
+
+}
 @media (max-width: 992px){
+	.cat {
+    margin-bottom: 20px;
+}
 	
 
 .vodeoplay img {
@@ -56,7 +66,10 @@
 }
 
 .searchiconb a {
-    color: #000;
+    background: #48c5b5;
+    padding: 10px 18px;
+    color: #fff;
+    border-radius: 3px;
 }
 .searchiconb{display:block;}
 
@@ -264,6 +277,7 @@ a.forgot {
 .short-list {
     font-size: 17px;
     margin-top: 15px;
+	justify-content: space-between;
 }
 .givevideo .col-md-12.text-right {
     text-align: center;
@@ -300,8 +314,9 @@ ul.nav-tabs.fillter_menu {
 }
 
 
-.voterlist .usern {
+.usern {
     width: 100%;
+    justify-content: space-between;
 }
 
 .voterlist .header-voted {
@@ -312,6 +327,9 @@ ul.nav-tabs.fillter_menu {
     width: 100%;
     text-align: center;
     margin-top: 5px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
 }
 
 a.ava {

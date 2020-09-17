@@ -26,8 +26,8 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'o_1!tpv6%13yt5&5^$^8e37apq4(9%+twdymc#+^jbe3)v#!ce'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'import_export',
     'django_summernote',
     'videos',
-    'system_setting',
+    'project_control',
     'home',
     'profiles',
     'my_videos',
@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'search',
     'manage_cms_page',
     'django_countries',
+    'subscription',
+    'manage_coupons',
 ]
 
 MIDDLEWARE = [
@@ -91,12 +93,25 @@ WSGI_APPLICATION = 'imratedme.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Database Engine of PostgreSQL Database
+        'NAME': 'postgres',  # Database Name
+        'USER': 'postgres',  # Database has a Root User
+        'PASSWORD': 'Digimonk#1',  # Database Connection Password
+        'HOST': "imratedmedb.cjzz3mbdj8gu.us-east-2.rds.amazonaws.com",  # IP Address for Localhost
+        'PORT': '5432'
     }
 }
+
 
 
 # Password validation
@@ -197,7 +212,7 @@ LOGIN_REDIRECT_URL = BASE_URL+'account/dashboard'
 LOGOUT_REDIRECT_URL = BASE_URL+'search/'
 
 
-
+#
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True

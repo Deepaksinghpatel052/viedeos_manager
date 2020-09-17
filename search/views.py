@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.views import generic
 from videos.models import VsVideos
 from django.http import HttpResponse, JsonResponse
@@ -11,7 +11,7 @@ from django.template.defaulttags import register
 from django.template.loader import render_to_string
 from .serializers import GetVideoSerializers
 from django.db.models import Q
-
+from imratedme import settings
 # Create your views here.
 
 @register.simple_tag
@@ -80,6 +80,14 @@ class SearchView(generic.ListView):
                     get_search_result = VsVideos.objects.filter(Publich_Status=True,Categoryes=category).order_by(set_order_by)
         #======================================ADD FILTER FOR CATEFORY end ================      
         return get_search_result
+
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            # return HttpResponseRedirect(reverse('admin_manage_setting:update_general',args=(get_data.id,)))
+            return redirect(settings.BASE_URL+"admin/")
+        else:
+            return super(SearchView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -4,11 +4,10 @@
 {% block cssstyle %}
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 <style type="text/css">
-  .set_clas_for_category_set a
-  {
-    background: #48c5b5;
-    color: #FFF !!important;
-  }
+  .set_clas_for_category_set a {
+    /* background: #48c5b5; */
+    color: #48c5b5 !important;
+}
 </style>
 {% endblock %}
 
@@ -102,8 +101,9 @@ Sort: <div class="select-custom">
 
 
 <div class="col-md-4">
-  <a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}" target="_blank">
+<!-- <div class="starbox"><i class="fa fa-star"></i>{{item|get_average_of_reating|slice:"0:10"}}</div> -->
 <div class="product_box">
+<a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}" target="_blank">
 <div class="cat_box">
 
 {% if item.Video_thumbnail %}
@@ -111,19 +111,25 @@ Sort: <div class="select-custom">
 {% else %}
 <img src='{% static "web/images/singer-2.png" %}' >
 {% endif %}
+
 </div>
 <div class="cat-text">
 <div class="singer_btn">
 <span>{{item.Categoryes.Title|slice:"0:8"}}</span>
 </div>
-<h4>{{item.Videos_Title|slice:"0:10"}} <br>From {{item.Country}}</h4>
+<h4>{{item.Videos_Title|slice:"0:40"}} By {{item.Created_By.name|slice:"0:8"}}
+ {% if item.Created_By.Other_Type %}
+  <sup style="
+    color: red;"><a href="{{item.Created_By.Site_Link}}" target="_blank">({{item.Created_By.Other_Type}})</a></sup>
+{% endif %}
+  </h4>
 
 <p>{{item.Created_date}}</p>
 </div>
 
-
-</div>
 </a>
+</div>
+
 </div>
 
 

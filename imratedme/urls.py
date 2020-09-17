@@ -30,4 +30,5 @@ urlpatterns = [
     path('videos-detail/', include(('videos_detail.urls','videos_detail'),namespace='videos_detail')),
     path('favourite-videos/', include(('favourite_videos.urls','favourite_videos'),namespace='favourite_videos')),
     path('search/', include(('search.urls','search'),namespace='search')),
+    path('subscription/', include(('subscription.urls','subscription'),namespace='subscription')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -66,7 +66,10 @@
     justify-content: space-between;
 ">
 <h1><span>{{object.Videos_Title}}</span></h1>
-<div class="short-list"><a href="#">{{object.Created_By}}</a></div>
+<div class="short-list"><a href="{{object.Created_By.Site_Link}}" target="_blank">{{object.Created_By}}{% if object.Created_By.Other_Type %}
+  <sup style="
+    color: red;">({{object.Created_By.Other_Type}})</sup>
+   {% endif %}</a></div>
 </div>
 </div>
 
@@ -108,28 +111,27 @@
 <div class="detail-right">
 
 
-{% if user|user_type|lower == 'voter' or user.username == "" %}
 
 <div class="votebox-de">
   <input type="hidden" name="" id="videos_id" value="{{object.Videos_id}}">
 <a href="#showform" class="active scrollTo"><i class="fa fa-thumbs-o-up"></i> Rate Now</a>
 {% if user.username == ""  %}
-<a href="{% url 'account:login' %}" class=""  ><i class="fa fa-heart"></i> Add to Favourite</a>
+<a href="{% url 'account:login' %}" class=""  ><i class="fa fa-heart"></i> Add to Favorite</a>
 {% else %}
   
   {% if user.id == object.Created_By.user.id %}
-<a href="#" class="uoloaded_by_you"><i class="fa fa-heart"></i> Add to Favourite</a>
+<a href="#" class="uoloaded_by_you"><i class="fa fa-heart"></i> Add to Favorite</a>
 
   {% else %}
 
-<a href="#" class="add_remove_favourite"  data-check_in_favi_list="{% url 'favourite_videos:check_favirate' object.Videos_id  %}" data-url="{% url 'favourite_videos:update_favirate' object.Videos_id  %}" data-conmirm_message="Do you want to add this video in your favourite list." data-after_message="Video add successfully." data-cancel_message="Video not add." ><i class="fa fa-heart"></i> Add to Favourite</a>
+<a href="#" class="add_remove_favourite"  data-check_in_favi_list="{% url 'favourite_videos:check_favirate' object.Videos_id  %}" data-url="{% url 'favourite_videos:update_favirate' object.Videos_id  %}" data-conmirm_message="Do you want to add this video in your favourite list." data-after_message="Video add successfully." data-cancel_message="Video not add." ><i class="fa fa-heart"></i> Add to Favorite</a>
     {% endif %}
 
 
 {% endif %}
 </div>
 
-{% endif %}
+
 
 
 
@@ -246,7 +248,14 @@
             </div>
     </div> 
    {% endfor %}
-
+<div class="vote-uservbox">
+        <div class="progressbar">
+            <div class="second circle" data-percent="{% get_one_video_overview_of_overview object %}"><canvas class="ca" width="{% get_one_video_overview_of_overview object %}" height=""></canvas>
+              <strong> {% get_one_video_overview_of_overview object %} </strong>
+              <span> <b>Overall</b> </span>
+            </div>
+            </div>
+    </div> 
   </div>
 </div>
 </div>
@@ -464,15 +473,15 @@ $.ajax({
       {
         if(data.status=="1")
         {
-          $(".add_remove_favourite").attr("data-conmirm_message","Do you want to remove this video in your favourite list.")
+          $(".add_remove_favourite").attr("data-conmirm_message","Do you want to remove this video in your favorite list.")
           $(".add_remove_favourite").attr("data-cancel_message","Video not removed.")
-              $(".add_remove_favourite").html('<i class="fa fa-heart"></i> Remove From Favourite');
+              $(".add_remove_favourite").html('<i class="fa fa-heart"></i> Remove From Favorite');
         }
         else
         {
-          $(".add_remove_favourite").attr("data-conmirm_message","Do you want to add this video in your favourite list.")
+          $(".add_remove_favourite").attr("data-conmirm_message","Do you want to add this video in your favorite list.")
           $(".add_remove_favourite").attr("data-cancel_message","Video not add.")
-           $(".add_remove_favourite").html('<i class="fa fa-heart"></i> Add to Favourite');
+           $(".add_remove_favourite").html('<i class="fa fa-heart"></i> Add to Favorite');
         }
       }
    });
@@ -489,7 +498,7 @@ check_in_fav_list();
 
 $(document).on("click",".uoloaded_by_you",function(){
 
-swal("This video is uploaded by you. so you can not add in your Favourite list.");
+swal("This video is uploaded by you. so you can not add in your Favorite list.");
 
 });
 

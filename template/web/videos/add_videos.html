@@ -3,9 +3,9 @@
  <link href="https://vjs.zencdn.net/7.7.6/video-js.css" rel="stylesheet" />
  <style type="text/css">
       .modal-dialog-full-width {
-width: 70% !important;
+width: 76.5% !important;
     height: 100% !important;
-    margin-left: 15% !important;
+    
     padding: 0 !important;
     max-width: none !important;
 
@@ -48,10 +48,10 @@ Select Category: <div class="select-custom">
 <div class="container">
 <!--   {{set_upload_status}}
   {{my_uploaded_videos}} -->
-{% if user|user_type|lower == 'performer' %}
+
 
   {% if set_upload_status  %}
-  <h1>Your upload limit is end. You can upload only '{{upload_limit}}' from one acount.</h1>
+  <h1>Your upload limit is end. You can upload only '{{upload_limit}}' according to your current subscription.</h1>
   {% else %}
 
     <div class="row">
@@ -157,7 +157,7 @@ Select Category: <div class="select-custom">
         </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6" id="show_sub_cate" style="display: none;">
 
         <div class="form-group">
         <label>Give Your Video a Sub Category</label>
@@ -234,7 +234,7 @@ Select Category: <div class="select-custom">
             <div class="design-process-content">
               <div class="submited_video">
 			  <div class="textbox_c">
-			  <div class="criclebox-logo" style="width:152px;">
+			  <div class="criclebox-logo">
 			  {{"menu"|show_logo}}
 			  </div>
 			  <p>Your <span>Video</span> Submitted Successfully.</p>
@@ -250,9 +250,7 @@ Select Category: <div class="select-custom">
     </div>
   </div>
 {% endif %}
-{% else %}
-<h1>Only performers can upload video. & your account type is {{user|user_type}}.</h1>
-{% endif %}
+
 </div>
 
 </section>
@@ -294,7 +292,8 @@ Select Category: <div class="select-custom">
    <div class="modal-dialog-full-width modal-dialog modal-lg">
       <div class="modal-content">
          <div class="modal-header">
-            <button class="btn btn-success crop_image_edit">Save Image</button>
+            <button class="btn btn-success crop_image_edit">Crop & Save Image</button>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -302,7 +301,7 @@ Select Category: <div class="select-custom">
                   <div id="image_demo_edit" style="width:350px;"></div>
                </div>
               
-
+              <button class="btn btn-success crop_image_edit">Crop & Save Image</button>
             </div>
          </div>
       </div>

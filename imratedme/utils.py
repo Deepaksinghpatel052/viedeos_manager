@@ -6,6 +6,24 @@ def random_string_generator(size=10, chars=string.ascii_uppercase + string.digit
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+def unique_id_generator_for_order_id(instance):
+    order_new_id= random_string_generator()
+    Klass= instance.__class__
+    qs_exists= Klass.objects.filter(order_id= order_new_id).exists()
+    if qs_exists:
+        return unique_id_generator_for_order_id(instance)
+    return order_new_id
+
+
+def unique_id_generator_for_CouponCode(instance):
+    order_new_id= random_string_generator()
+    Klass= instance.__class__
+    qs_exists= Klass.objects.filter(CouponCode= order_new_id).exists()
+    if qs_exists:
+        return unique_id_generator_for_CouponCode(instance)
+    return order_new_id
+
+
 
 
 def unique_id_generator_for_VsUsers(instance):
@@ -15,7 +33,7 @@ def unique_id_generator_for_VsUsers(instance):
 
     qs_exists= Klass.objects.filter(user_code= order_new_id).exists()
     if qs_exists:
-        return unique_id_generator(instance)
+        return unique_id_generator_for_VsUsers(instance)
     return order_new_id
 
 def unique_id_generator(instance):

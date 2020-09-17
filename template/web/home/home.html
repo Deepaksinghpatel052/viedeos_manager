@@ -1,7 +1,7 @@
 {% extends 'web/base_template.html' %}
 {% block content %}
 {% load static %}
-<a href="{% url 'videos_detail:videos_detail' get_data_of_home_page.Video_Of_The_Day.Videos_id  get_data_of_home_page.Video_Of_The_Day.Videos_Slug %}">
+
 <div class="banner">
 <div class="vodeoplay">
     
@@ -9,6 +9,10 @@
 
 </div>
 <div class="bannertext">
+    <a href="{% url 'videos_detail:videos_detail' get_data_of_home_page.Video_Of_The_Day.Videos_id  get_data_of_home_page.Video_Of_The_Day.Videos_Slug %}" style="display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%; left:0px; top:0px;"></a>
 <div class="container">
 <div class="box-breadcrumb">
                 <div class="box-left">
@@ -31,7 +35,11 @@
                         by <strong>
 
 <a href="{% url 'videos_detail:videos_detail' get_data_of_home_page.Video_Of_The_Day.Videos_id  get_data_of_home_page.Video_Of_The_Day.Videos_Slug %}">{{get_data_of_home_page.Video_Of_The_Day.Created_By}}</a>
-</strong> from <strong>{{get_data_of_home_page.Video_Of_The_Day.Country}}</strong>
+{% if get_data_of_home_page.Video_Of_The_Day.Created_By.Other_Type %}
+<sup style="
+    color: red;"><a href="{{get_data_of_home_page.Video_Of_The_Day.Created_By.Site_Link}}" target="_blank">({{get_data_of_home_page.Video_Of_The_Day.Created_By.Other_Type}})</a></sup>
+    {% endif %}
+</strong> 
                     </div>
                 </div>
                 {% if get_reating %}
@@ -65,6 +73,7 @@
 			
 			
 </div>
+
 <div class="box-bl">
                     <a href="{% url 'videos_detail:videos_detail' get_data_of_home_page.Video_Of_The_Day.Videos_id  get_data_of_home_page.Video_Of_The_Day.Videos_Slug %}" class="js-visit-item bt-default green-fill" target="_blank" rel="noopener nofollow">Watch</a>
 
@@ -75,7 +84,7 @@
 </div>
 
 </div>
-</a>
+
 {% if get_data_of_home_page.Session_2_Title %}
 <section class="bg-gray padding-100">
 <div class="container">
@@ -142,7 +151,7 @@
 <section class="videoweek bg-gray">
 <div class="container">
 
-{% if get_data_of_home_page.Videos_Of_The_Week %}
+{% if get_data_of_home_page.Videos_Of_The_Week.all %}
 <div class="title-heading text-center">
 <h2>Videos <span>Of the Week</span></h2>
 </div>
@@ -184,10 +193,11 @@
 
 <div class="weektext">
 
-<h3> {{item.Videos_Title|slice:"0:5"}}</h3>
+<h3> {{item.Videos_Title}}</h3>
 <div class="location">
 <div class="loctionview">
-From {{item.Country}} <span></span>
+By {{item.Created_By}}<sup style="
+    color: red;"><a href="{{get_vs_user_data.Site_Link}}" target="_blank">({{item.Created_By.Other_Type}})</a></sup> <span></span>
 </div>
 <div class="loction_date">{{item.Created_date}}</div>
 </div>
@@ -233,24 +243,25 @@ BY <span><a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Vide
 
 <div class="videoweek_box">
 <a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}" target="_blank">
-<div class="starbox"><i class="fa fa-star"></i>{{item|get_average_of_reating|slice:"0:10"}}</div>
+<!-- <div class="starbox"><i class="fa fa-star"></i>{{item|get_average_of_reating|slice:"0:10"}}</div> -->
 <div class="rollover">
 <img class="dsp_set_height" src='{% if item.Video_thumbnail %} {{item.Video_thumbnail.url}} {% else %}{% static "web/images/g.png" %} {% endif %}' />
 </div>
 </a>
 <div class="weektext">
-
-<h3>{{item.Videos_Title|slice:"0:5"}}</h3>
+<a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}" target="_blank">
+<h3>{{item.Videos_Title|slice:"0:50"}}</h3>
 <div class="location">
-<div class="loctionview">
-From {{item.Country}} 
-</div>
+
 <div class="loction_date">{{item.Created_date}}</div>
 </div>
-
+</a>
 <div class="location">
 <div class="loctionview bydigi">
-BY <span><a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}"target="_blank" >{{item.Created_By.name|slice:"0:20"}}...</a></span>
+BY <span><a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}"target="_blank" >{{item.Created_By.name|slice:"0:20"}}...</a>{% if item.Created_By.Other_Type %}
+  <sup style="
+    color: red;"><a href="{{item.Created_By.Site_Link}}" target="_blank">({{item.Created_By.Other_Type}})</a></sup>
+{% endif %}</span>
 </div>
 <!-- <div class="btn_new">
 <a href="#" class="yellow_btn">HM</a>
@@ -295,24 +306,27 @@ BY <span><a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Vide
 
 <div class="videoweek_box">
 <a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}" target="_blank">
-<div class="starbox"><i class="fa fa-star"></i>{{item|get_average_of_reating|slice:"0:10"}}</div>
+<!-- <div class="starbox"><i class="fa fa-star"></i>{{item|get_average_of_reating|slice:"0:10"}}</div> -->
 <div class="rollover">
 <img class="dsp_set_height" src='{% if item.Video_thumbnail %} {{item.Video_thumbnail.url}} {% else %}{% static "web/images/g.png" %} {% endif %}' />
 </div>
 </a>
 <div class="weektext">
-
-<h3>{{item.Videos_Title|slice:"0:5"}}</h3>
+<a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}" target="_blank">
+<h3>{{item.Videos_Title|slice:"0:50"}}</h3>
 <div class="location">
-<div class="loctionview">
-From {{item.Country}} 
-</div>
+
 <div class="loction_date">{{item.Created_date}}</div>
 </div>
+</a>
 
 <div class="location">
 <div class="loctionview bydigi">
-BY <span><a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}">{{item.Created_By.name|slice:"0:20"}}...</a></span>
+BY <span><a href="{% url 'videos_detail:videos_detail' item.Videos_id  item.Videos_Slug %}">{{item.Created_By.name|slice:"0:25"}}...</a>
+ {% if item.Created_By.Other_Type %}
+  <sup style="
+    color: red;"><a href="{{item.Created_By.Site_Link}}" target="_blank">({{item.Created_By.Other_Type}})</a></sup>
+{% endif %}</span>
 </div>
 <!-- <div class="btn_new">
 <a href="#" class="yellow_btn">HM</a>

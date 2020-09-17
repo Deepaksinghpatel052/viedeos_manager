@@ -61,7 +61,16 @@ if(get_cate_id)
       data:{"get_cate_id":get_cate_id},
       dataType:"html",
       success:function(data){
-      
+        
+      if(data=="")
+      {
+         $("#show_sub_cate").css('display','none');
+      }
+      else
+      {
+          $("#show_sub_cate").css('display','block');
+      }
+
       $("#select_sub_category").html(data); 
         
       }

@@ -26,12 +26,12 @@ class SignUpForm(UserCreationForm):
 
 class  VsUsersForm(forms.ModelForm):
 
-    Type = forms.CharField(label='Type', widget=forms.RadioSelect(choices=CHOICES))
+    # Type = forms.CharField(label='Type', widget=forms.RadioSelect(choices=CHOICES))
     name = forms.CharField(required=True, widget=forms.TextInput(attrs={"class": "form-control","placeholder": "Name"}))
     Contact_no = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={"class": "form-control","placeholder": "Phone No"}))
     Zip_Code = forms.IntegerField(required=True, widget=forms.NumberInput(attrs={"class": "form-control","placeholder": "Zipcode"}))
     class Meta:
         model = VsUsers
-        fields = ('name', 'Contact_no','Type', 'Zip_Code', )
+        fields = ('name', 'Contact_no', 'Zip_Code', )
 
 

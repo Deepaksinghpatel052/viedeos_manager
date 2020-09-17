@@ -6,7 +6,7 @@ from manage_cms_page.models import VsCmsPage
 from videos.models import VsVideos
 from favourite_videos.models import VsFavourite,VsSendEmailForNewVideo
 from account.models import VsUsers
-from system_setting.models import VsSystemSettings
+from project_control.models import VsSystemSettings
 from django.db.models import Count
 from categorys_and_reatings.models import VsConnectReatingWithCate,VsCategory
 from datetime import datetime, timedelta
@@ -108,7 +108,7 @@ class HomeView(generic.TemplateView):
         # context["videos_of_tha_day"] = videos_of_tha_day
         context["get_data_of_home_page"] = get_data_of_home_page
         # ==================================================================================
-        get_reatings= None
+        get_reating= None
         if VsConnectReatingWithCate.objects.filter(Category=get_data_of_home_page.Video_Of_The_Day.Categoryes).filter(Sub_Category=get_data_of_home_page.Video_Of_The_Day.Sub_Categoryes).exists():
             get_reating =  get_object_or_404(VsConnectReatingWithCate,Category=get_data_of_home_page.Video_Of_The_Day.Categoryes,Sub_Category=get_data_of_home_page.Video_Of_The_Day.Sub_Categoryes)
         context["get_reating"] = get_reating

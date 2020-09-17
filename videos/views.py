@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponseRedirect,HttpResponse,get_object_or_404
+from django.shortcuts import render,HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -13,9 +13,11 @@ from datetime import datetime
 from datetime import date
 from django.core.files.base import ContentFile
 import base64
-from system_setting.models import VsSystemSettings
+from project_control.models import VsSystemSettings
 from django.db.models import F
 from imratedme.utils import slug_generator_for_videos
+from subscription.models import VsUserSubscriptionPayment
+from imratedme import settings
 # Create your views here.
 
 
@@ -118,6 +120,21 @@ def get_sub_category(request):
 class VideosAddView(generic.TemplateView):
     template_name = "web/videos/add_videos.html"
 
+
+    def get(self, *args, **kwargs):
+        Created_By = get_object_or_404(VsUsers, user=self.request.user)
+        if not VsUserSubscriptionPayment.objects.filter(User=Created_By).filter(Active_status=True).exists():
+            return redirect(settings.BASE_URL + "subscription/")
+        return super().get(*args, **kwargs)
+
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            # return HttpResponseRedirect(reverse('admin_manage_setting:update_general',args=(get_data.id,)))
+            return redirect(settings.BASE_URL+"admin/")
+        else:
+            return super(VideosAddView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category = None
@@ -127,10 +144,24 @@ class VideosAddView(generic.TemplateView):
         set_upload_status = False
         Created_By = get_object_or_404(VsUsers, user=self.request.user)
         get_user_videos = VsVideos.objects.filter(Created_By=Created_By,Publich_Status=True).count()
-        if get_user_videos >= system_settings.No_of_videos_uploaded_by_one_account:
+        system_limit = 0
+        error_message = ""
+        if VsUserSubscriptionPayment.objects.filter(User=Created_By).filter(Active_status=True).exists():
+            get_package_data = VsUserSubscriptionPayment.objects.filter(User=Created_By).filter(Active_status=True).last()
+            if get_package_data.Expayer_date.date() >= datetime.today().date():
+                system_limit = get_package_data.Upload_Video_limit
+                error_message = "Your upload limit is end. You can upload only " + str(
+                    system_limit) + " from one acount."
+            else:
+                system_limit = 0
+                error_message = "Your membership is expired. please update your membership."
+        else:
+            system_limit = 0
+
+        if get_user_videos >= system_limit:
             set_upload_status = True
         context['category'] = category
-        context['upload_limit'] = system_settings.No_of_videos_uploaded_by_one_account
+        context['upload_limit'] = system_limit
         context['my_uploaded_videos'] = get_user_videos
         context['set_upload_status'] = set_upload_status
         return context
@@ -142,6 +173,19 @@ class VideosAddView(generic.TemplateView):
         system_settings = VsSystemSettings.objects.all().first()
         Created_By = get_object_or_404(VsUsers, user=self.request.user)
         get_user_videos = VsVideos.objects.filter(Created_By=Created_By,Publich_Status=True).count()
+        system_limit = 0
+        error_message = ""
+        if VsUserSubscriptionPayment.objects.filter(User=Created_By).filter(Active_status=True).exists():
+            get_package_data = VsUserSubscriptionPayment.objects.filter(User=Created_By).filter(Active_status=True).last()
+            if get_package_data.Expayer_date.date() >= datetime.today().date():
+                system_limit = get_package_data.Upload_Video_limit
+                error_message = "Your upload limit is end. You can upload only " + str(
+                    system_limit) + " from one acount."
+            else:
+                system_limit = 0
+                error_message = "Your membership is expired. please update your membership."
+        else:
+            system_limit = 0
         if get_user_videos >= system_settings.No_of_videos_uploaded_by_one_account:
             status = "1"
         if status == "1":

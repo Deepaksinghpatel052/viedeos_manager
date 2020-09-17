@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect,redirect
 from django.views import generic
 from account.models import VsUsers
 from account.forms import VsUsersForm
@@ -12,6 +12,7 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.urls import reverse
+from imratedme import settings
 # Create your views here.
 
 @method_decorator(login_required , name="dispatch")
@@ -30,6 +31,16 @@ class ProfileView(SuccessMessageMixin,generic.CreateView):
         context["user_info"] = get_data
 
         return context
+
+
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            # return HttpResponseRedirect(reverse('admin_manage_setting:update_general',args=(get_data.id,)))
+            return redirect(settings.BASE_URL+"admin/")
+        else:
+            return super(ProfileView, self).dispatch(request, *args, **kwargs)
+
 
     def get_success_message(self, cleaned_data):
         # print(cleaned_data)

@@ -296,7 +296,7 @@ section{padding:50px 0px;}
     box-shadow: 0px 0px 20px #7c7c7c;
     position: relative;
     border-radius: 0px 0px 150px 0px;
-	height: 300px;
+	min-height: 300px;
 }
 
 .bg-gray {
@@ -310,26 +310,26 @@ section{padding:50px 0px;}
 
 .musicbox {
     position: absolute;
-    width: 30%;
-    top: -50px;
-	
+    width: 33%;
+    top: -17px;
 }
 
 .music-content {
     /* width: 100%; */
     
     text-align: center;
-    padding: 25px 10% 50px 35%;
+    padding: 25px 10% 25px 35%;
 
 }
 
 .music-content h2 {
     margin: 0px;
     font-size: 48px;
+	line-height: 35px;
 }
 
 .music-content p {
-    font-size: 22px;
+    font-size: 21px;
     
     line-height: 28px;
     margin-top: 15px;
@@ -428,6 +428,7 @@ section{padding:50px 0px;}
 
 .weektext {
     padding: 15px;
+    min-height: 158px;
 }
 
 .weektext h3 {
@@ -486,7 +487,7 @@ section{padding:50px 0px;}
     font-weight: 600;
     color: #000;
 }
-.location:last-child{margin-bottom:0px;}
+
 
 .btn_new a {
     display: inline-block;
@@ -530,7 +531,12 @@ section{padding:50px 0px;}
 .starbox {
     position: absolute;
     right: 15px;
-    top: 15px;
+    top: 20px;
+    z-index: 10;
+    color: #fff;
+    background: rgb(249 14 14 / 68%);
+    padding: 5px 10px;
+    border-radius: 30px;
 }
 
 .starbox a {
@@ -1031,7 +1037,7 @@ b.mobile-none {
 }
 
 .our-collection h1 {
-    font-size: 36px;
+    font-size: 32px;
     text-transform: uppercase;
     margin: 0px;
     padding: 0px;
@@ -1325,15 +1331,16 @@ span.count_in {
 }
 
 .cat-text {
-    padding: 15px;
+    padding: 15px 5px;
     text-align: center;
-	position: relative;
+    position: relative;
+    color: #000;
 }
 
 .cat-text h4 {
-    margin: 0px;
+    margin: -21px 0 0px;
     padding: 0px;
-    font-size: 19px;
+    font-size: 16px;
     font-weight: 400;
 	line-height: 24px;
 }
@@ -1362,7 +1369,7 @@ span.count_in {
 
 .cat-text p {
     margin: 0px;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
 }
 .digitach span {
@@ -1753,11 +1760,11 @@ section.light-gray {
   margin-bottom: 10px;
 }
 
-.box-tools {
+/*.box-tools {
   position: absolute;
   right: 10px;
   top: 5px;
-}
+}*/
 
 .dropzone-wrapper {
   border: 2px dashed #48c5b5;
@@ -1899,7 +1906,7 @@ section.light-gray {
 }
 
 .upload_imgbox {
-    height: 331px;
+    height: 308px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -1930,7 +1937,7 @@ section.light-gray {
     opacity: 0;
 }
 .upbtn p {
-    margin: 100px 0px 0px;
+    margin: 59px 0px 0px;
     font-size: 24px;
     padding: 0px 15px;
     color: #fff;
@@ -2237,6 +2244,7 @@ img.detailing {
 .circle canvas {
   vertical-align: top;
   width: 65px !important;
+  height: 65px !important;
 }
 
 .circle strong {
@@ -2466,25 +2474,30 @@ input::-moz-focus-outer {
 }
 
 .comment_new {
-    display: flex;
-    align-items: end;
+    /*display: flex;
+    align-items: end;*/
     border-radius: 3px;
 }
 
 .userimg {
     width: 90px;
     margin-right: 15px;
+    display: inline-block;
+    float: left;
 }
 
 .userimg img {
     border: 1px solid #ccc;
     padding: 5px;
     border-radius: 100%;
+    height: 85px;
+    width: 85px;
 }
 
 .commenttext {
-    width: 100%;
+    /* width: 50%; */
     resize: none;
+    overflow: hidden;
 }
 
 .commenttext textarea.form-control {
@@ -2691,4 +2704,166 @@ canvas.ca {
 }
 .usercommentbox {
     padding: 15px;
+}
+
+.tabs-pricing ul {
+    padding: 0px;
+    text-align: center;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    border-radius: 5px;
+    width: 244px;
+    margin: auto;
+}
+
+.tabs-pricing ul li {
+    list-style: none;
+    display: inline-block;
+    padding: 15px;
+    width: 121px;
+    float: left;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.tabs-pricing ul li:hover {
+    background: #48c5b5;
+    color: #fff;
+}
+.tabs-pricing ul li.active {
+    background: #48c5b5;
+    color: #fff;
+}
+
+.pricing-box {
+    background:#fff;
+    box-shadow: 0px 0px 20px #ccc;
+    padding: 15px;
+}
+
+.tabs-pricing {
+    margin-bottom: 35px;
+}
+
+.pricing-box h4 {
+    text-align: center;
+    font-weight: 300;
+}
+
+.pricing-rate {
+    text-align: center;
+    font-size: 36px;
+}
+
+.pricing-rate small {
+    font-size: 14px;
+}
+
+ul.watch {
+    margin: 0px 0px 15px 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+ul.watch li {
+    display: block;
+    padding: 5px 5px 5px 25px;
+    line-height: 24px;
+    position: relative;
+}
+
+ul.watch li:before {content: "\f05d";position: absolute;left: 0px;top: 4px;font-family: FontAwesome;}
+
+.pricing-box button {
+    font-size: 20px;
+    text-transform: capitalize;
+}
+.col-md-6.padding-right-0 {
+    padding-right: 0px;
+}
+
+.col-md-6.pricing-left {
+    padding-left: 0px;
+}
+.halfbtn {
+    text-align: center;
+}
+
+button.btn.btn-lg.login_btn.width-50 {
+    width: 200px;
+}
+
+
+@media (min-width: 992px){
+    h2.membership {
+    margin-bottom: 50px;
+}
+    button.btn.btn-lg.login_btn.get-now {
+    margin-top: 79px;
+}
+    .pricing-box {
+    min-height: 375px;
+    position: relative;
+}
+.pricing-height{border: 2px solid #59c6b8;
+    min-height: 425px;
+    margin-top: -25px;}
+    
+    
+}
+
+.plan_date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+}
+
+@media (min-width: 992px){
+.cat_box img {
+    min-height: 147px;
+}
+}
+@media (max-width: 992px){
+	
+footer .col-md-6.text-right {
+    text-align: left;
+}
+
+.box-header.with-border {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box-header.with-border .btn {
+    font-size: 9px;
+    padding: 6px;
+}
+.col-md-6.padding-right-0 {
+    padding-right: 15px;
+    margin-bottom: 30px;
+}
+.col-md-6.pricing-left {
+    padding-left: 15px;
+}
+.scrollbar {
+    width: 100% !important;
+}
+
+}
+
+.by sup a {
+    color: red;
+}
+.bydigi.loctionview sup a {
+    color: red;
+}
+.cat-text h4 sup a {
+    color: red;
+}
+.macik h1 sup a {
+    color: red;
 }

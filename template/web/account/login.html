@@ -1,6 +1,13 @@
 {% extends 'web/base_template.html' %}
 {% block content %}
 {% load static %}
+<style type="text/css">
+ #id_username
+ {
+    text-transform: lowercase;
+  }
+</style>
+
 <section class="login_bg">
 	<div class="loginAG">
 	<div class="login_width">
@@ -82,7 +89,7 @@
 
 	</div>
 
-	<div class="account"> You don't have as account? <a href="{% url 'account:registration' %}" class="reg">Register Now</a></div>
+	<div class="account"> You don't have as account? <br><a href="{% url 'account:registration' %}" class="reg">Register Now</a></div>
 
 	</div>
 </form>

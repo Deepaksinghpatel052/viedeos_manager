@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'import_export',
     'django_summernote',
     'videos',
-    'system_setting',
+    'project_control',
     'home',
     'profiles',
     'my_videos',

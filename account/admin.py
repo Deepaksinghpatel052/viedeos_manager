@@ -1,17 +1,17 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from .models import VsUsers
-from system_setting.models import VsSystemSettings
+from project_control.models import VsSystemSettings
 from django.contrib.auth.models import User, Group
 # Register your models here.
 class VsUsersAdmin(admin.ModelAdmin):
-    search_fields = ['user__username','name','Type','Contact_no']
-    list_display = ('user','name','user_code','Type','DOJ','Contact_no','Zip_Code','password')
+    search_fields = ['user__username','name','Type','Contact_no','Other_Type']
+    list_display = ('user','name','user_code','Type','DOJ','Contact_no','Zip_Code','Other_Type')
     list_filter = ('user',)
     readonly_fields = ["user_code"]
 
-    def has_add_permission(self, request, obj=None):
-        return False
+    # def has_add_permission(self, request, obj=None):
+    #     return False
 
 admin.site.register(VsUsers,VsUsersAdmin)
 admin.site.unregister(Group)

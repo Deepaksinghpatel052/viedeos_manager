@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,HttpResponse
+from django.shortcuts import render,get_object_or_404,HttpResponse,redirect
 from django.views import generic
 from videos.models import VsVideos,VsComments,VsRating,VsComments
 from account.models import VsUsers
@@ -9,8 +9,10 @@ from django.db.models import Count,Sum,Avg,F
 from categorys_and_reatings.models import VsConnectReatingWithCate,VsReatingAttribute
 from django.views.generic.base import TemplateView
 from django.template.loader import render_to_string
-from system_setting.models import VsSystemSettings
+from project_control.models import VsSystemSettings
+from imratedme import settings
 # Create your views here.
+
 
 
 
@@ -38,27 +40,34 @@ def get_overall_of_attribute(attribute,video):
 
 @register.filter(name='ger_user_image')
 def ger_user_image(user):
-    get_image  = get_object_or_404(VsUsers,user=user)
-    if get_image.Image:
-        return get_image.Image.url
-    else:
-        if VsSystemSettings.objects.all().order_by("id").exists():
-            get_SystemSettings = VsSystemSettings.objects.all().order_by("id").first()
-            if get_SystemSettings.Logo:
-                return get_SystemSettings.Logo.url
+    get_image = None
+    if VsUsers.objects.filter(user=user).exists():
+        get_image  = get_object_or_404(VsUsers,user=user)
+        if get_image.Image:
+            return get_image.Image.url
+        else:
+            if VsSystemSettings.objects.all().order_by("id").exists():
+                get_SystemSettings = VsSystemSettings.objects.all().order_by("id").first()
+                if get_SystemSettings.Logo:
+                    return get_SystemSettings.Logo.url
+                else:
+                    return "/static/web/dummyUser.jpg"
             else:
                 return "/static/web/dummyUser.jpg"
-        else:
-            return "/static/web/dummyUser.jpg"
+    else:
+        return "/static/web/dummyUser.jpg"
 
 @register.simple_tag
 def get_rating(user_ins,video_ins,attri_ins,inc_time=1):
     reating = 0
-    vs_user = get_object_or_404(VsUsers,user=user_ins)
-    if VsRating.objects.filter(Video=video_ins).filter(User=vs_user).filter(Reating_attrbute=attri_ins).exists():
-        get_data = get_object_or_404(VsRating,Video=video_ins,User=vs_user,Reating_attrbute=attri_ins)
-        reating = get_data.Reating
-    return reating*int(inc_time)
+    if VsUsers.objects.filter(user=user).exists():
+        vs_user = get_object_or_404(VsUsers,user=user_ins)
+        if VsRating.objects.filter(Video=video_ins).filter(User=vs_user).filter(Reating_attrbute=attri_ins).exists():
+            get_data = get_object_or_404(VsRating,Video=video_ins,User=vs_user,Reating_attrbute=attri_ins)
+            reating = get_data.Reating
+        return reating*int(inc_time)
+    else:
+        return reating
 
 @register.simple_tag
 def get_comment(user_ins,video_ins):
@@ -91,9 +100,27 @@ def get_votes_data(user_id,video):
     return render_to_string("web/videos_detail/voters_info.html",user_data)
 
 @register.simple_tag
+def get_one_video_overview_of_overview(video):
+    all_reating = [0]
+    all_total = []
+    if VsRating.objects.filter(Video=video).filter(Status=True).exists():
+        all_total = VsRating.objects.values('User').filter(Video=video).filter(Status=True).annotate(total=Count('id'))
+        for item in all_total:
+            if VsUsers.objects.filter(id=item['User']).exists():
+                get_user = get_object_or_404(VsUsers,id=item['User'])
+                test_data = get_user
+                all_reating.append(get_one_user_overview(get_user, video))
+    total = sum(all_reating)
+    total_user = len(all_total)
+    # return int(average*10)
+    return int(total/total_user)
+
+
+@register.simple_tag
 def get_one_user_overview(user_id,video):
     all_reating = []
     all_total = []
+
     if VsRating.objects.filter(Video=video).filter(User=user_id).filter(Status=True).exists():
         get_all_rating_data = VsRating.objects.filter(Video=video).filter(User=user_id).filter(Status=True)
         for item in get_all_rating_data:
@@ -126,7 +153,7 @@ def get_average_of_reating(video_ins):
     else:    
         precentage = (sum_of_reating*100)/sum_of_total
         average = precentage/10
-    return average
+    return round(average,1)
 
 
 
@@ -140,6 +167,13 @@ class VideosDetailView(generic.DetailView):
         if VsVideos.objects.filter(Videos_id=self.kwargs.get("video_id")).exists():
             get_data = get_object_or_404(VsVideos, Videos_id=self.kwargs.get("video_id"))
         return get_data
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            # return HttpResponseRedirect(reverse('admin_manage_setting:update_general',args=(get_data.id,)))
+            return redirect(settings.BASE_URL+"admin/")
+        else:
+            return super(VideosDetailView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -192,8 +226,9 @@ class VideosDetailView(generic.DetailView):
 
     def post(self, request, *args, **kwargs):  
         get_video_ins  = get_object_or_404(VsVideos,Videos_id=request.POST["videos_id"])
-        user_ins = get_object_or_404(VsUsers,user=request.user)
+        user_ins = get_object_or_404(VsUsers, user=request.user)
         message_set = ""
+        message = ""
         for item in request.POST.getlist('range_name'):
             print("===========") 
             print(item) 
@@ -216,5 +251,8 @@ class VideosDetailView(generic.DetailView):
             else:
                 add_comment = VsComments(Video=get_video_ins,User=user_ins,Comment=request.POST["comments"])
                 add_comment.save()
-        message_set  =  message+message_2+"."
+        if message == "":
+            message_set = "Comment add successfully."
+        else:
+            message_set  =  message+message_2+"."
         return JsonResponse({"message":message_set})
